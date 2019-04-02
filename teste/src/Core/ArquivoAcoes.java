@@ -1,10 +1,17 @@
 package Core;
 
+import java.io.File;
+
 public class ArquivoAcoes extends javax.swing.JFrame {
 
     /**
      * Creates new form ArquivoAcoes
      */
+    public ArquivoAcoes(File arquivo) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+    }
+
     public ArquivoAcoes() {
         initComponents();
         this.setLocationRelativeTo(null);

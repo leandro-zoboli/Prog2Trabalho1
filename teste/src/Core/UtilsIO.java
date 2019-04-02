@@ -3,7 +3,6 @@ package Core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javax.swing.JFileChooser;
 
 public class UtilsIO {
 
@@ -15,21 +14,31 @@ public class UtilsIO {
     private static void PreencherArquivo(File arquivo) {
 
     }
-
+  
     public static int[] ReadBytes(File file, int length) {
-        int[] retorno = new int[length];
+        int[] result = new int[length];
         for (int i = 0; i < length; i++) {
-            retorno[i] = -1;
+            result[i] = -1;
         }
         try {
             FileInputStream reader = new FileInputStream(file);
 
             for (int i = 0; i < length; i++) {
-                retorno[i] = reader.read();
+                result[i] = reader.read();
             }
         } catch (Exception e) {
             System.out.println("Ocorreu um erro ao ler o arquivo. Erro: " + e.getMessage());
         }
-        return retorno;
+        return result;
     }
+    
+    public static String ReadData(File file, int length) {
+        String result = "";
+        int[] data = ReadBytes(file, length);
+        for (int i : data) {
+            result += (char)i;
+        }
+        return result;
+    }
+
 }

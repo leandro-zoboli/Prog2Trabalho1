@@ -1,19 +1,20 @@
 package Core;
 
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class ArquivoEscolha extends javax.swing.JFrame {
-    
+
+    private File arquivo;
+
     public ArquivoEscolha() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle("Salvar arquivos .mp3");
+        arquivo = null;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -90,8 +91,8 @@ public class ArquivoEscolha extends javax.swing.JFrame {
         j.setFileSelectionMode(JFileChooser.FILES_ONLY);
         //j.showSaveDialog(null);
         int retorno = j.showOpenDialog(this);
-        File arquivo = j.getSelectedFile();
-        
+        arquivo = j.getSelectedFile();
+
         if (retorno == JFileChooser.APPROVE_OPTION) {
             nomeArquivo.setText(arquivo.getName());
         } else if (retorno == JFileChooser.CANCEL_OPTION) {
@@ -101,20 +102,30 @@ public class ArquivoEscolha extends javax.swing.JFrame {
         //btnPronto.setEnabled(nomeArquivo.getText() != "");
         //veriricar se arquivo é mp3 (3 primeiros bytes formam 'TAG')
         //if (nomeArquivo.getText().split(".")[nomeArquivo.getText().split(".").length] == "mp3") {
-          //  int[] primeirosBytes = UtilsIO.ReadBytes(arquivo, 3);
+        //  int[] primeirosBytes = UtilsIO.ReadBytes(arquivo, 3);
         //}
-        
-        btnPronto.setEnabled(true);
+        btnPronto.setEnabled(ArquivoEhMp3(nomeArquivo.getText()));
     }//GEN-LAST:event_btnBuscarArquivoActionPerformed
+
+    private boolean ArquivoEhMp3(String arquivo) {
+        if (!arquivo.equals("")) {
+            return arquivo.endsWith(".mp3");
+        }
+        return false;
+    }
 
     private void btnEditarArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarArquivoActionPerformed
         btnEditarArquivo.setEnabled(nomeArquivo.getText() != "");
     }//GEN-LAST:event_btnEditarArquivoActionPerformed
 
     private void btnProntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProntoActionPerformed
-        ArquivoAcoes acoes = new ArquivoAcoes();
-        acoes.setVisible(true);
-        this.dispose();
+        if (!UtilsIO.ReadData(arquivo, 3).equals("TAG")) {
+            JOptionPane.showMessageDialog(this, "O arquivo escolhido não possui o formato \"ID3v1.1\"", "Atenção:", JOptionPane.WARNING_MESSAGE);
+        } else {
+            ArquivoAcoes acoes = new ArquivoAcoes(arquivo);
+            acoes.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnProntoActionPerformed
 
     /**
