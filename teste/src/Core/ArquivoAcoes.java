@@ -10,11 +10,23 @@ public class ArquivoAcoes extends javax.swing.JFrame {
     public ArquivoAcoes(File arquivo) {
         initComponents();
         this.setLocationRelativeTo(null);
+        tbTitulo.setText(UtilsIO.ReadData(arquivo, 30));
+        tbArtista.setText(UtilsIO.ReadData(arquivo, 30));
+        tbAlbum.setText(UtilsIO.ReadData(arquivo, 30));
+        tbAno.setText(UtilsIO.ReadData(arquivo, 4));
+        tbComentario.setText(UtilsIO.ReadData(arquivo, 28));
+        UtilsIO.ReadData(arquivo, 1);
+        tbNrFaixa.setText(UtilsIO.ReadData(arquivo, 1));
+        preencheGenero(UtilsIO.ReadData(arquivo, 1));
     }
 
     public ArquivoAcoes() {
         initComponents();
         this.setLocationRelativeTo(null);
+    }
+    
+    private void preencheGenero(String genero){
+        
     }
 
     /**
