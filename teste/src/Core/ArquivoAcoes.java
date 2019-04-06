@@ -9,6 +9,7 @@ public class ArquivoAcoes extends javax.swing.JFrame {
      */
     public ArquivoAcoes(File arquivo) {
         initComponents();
+        InicializarComboGenero();
         this.setLocationRelativeTo(null);
         tbTitulo.setText(UtilsIO.ReadData(arquivo, 30));
         tbArtista.setText(UtilsIO.ReadData(arquivo, 30));
@@ -24,9 +25,13 @@ public class ArquivoAcoes extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-    
-    private void preencheGenero(String genero){
-        
+
+    private void preencheGenero(String genero) {
+        if (UtilsIO.isNumber(genero)) {
+            if (Integer.parseInt(genero) <= UtilsIO.genresLastIndex) {
+                cbGenero.setSelectedIndex(Integer.parseInt(genero));
+            }
+        }
     }
 
     /**
@@ -47,14 +52,14 @@ public class ArquivoAcoes extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         tbTitulo = new javax.swing.JTextField();
         tbArtista = new javax.swing.JTextField();
         tbAlbum = new javax.swing.JTextField();
         tbAno = new javax.swing.JTextField();
         tbComentario = new javax.swing.JTextField();
         tbNrFaixa = new javax.swing.JTextField();
-        tbGenero = new javax.swing.JTextField();
+        cbGenero = new javax.swing.JComboBox<>();
+        btnLimpar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,16 +86,18 @@ public class ArquivoAcoes extends javax.swing.JFrame {
 
         jButton2.setText("Salvar alterações");
 
-        jButton3.setText("Limpar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         tbAno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbAnoActionPerformed(evt);
+            }
+        });
+
+        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
             }
         });
 
@@ -100,33 +107,35 @@ public class ArquivoAcoes extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton3)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton2)
-                            .addGap(75, 75, 75)
-                            .addComponent(jButton1))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(4, 4, 4)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel7)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel5))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(tbTitulo)
-                                .addComponent(tbArtista)
-                                .addComponent(tbAlbum)
-                                .addComponent(tbAno)
-                                .addComponent(tbComentario)
-                                .addComponent(tbNrFaixa)
-                                .addComponent(tbGenero)))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(75, 75, 75)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                            .addComponent(tbArtista)
+                            .addComponent(tbAlbum)
+                            .addComponent(tbAno)
+                            .addComponent(tbComentario)
+                            .addComponent(tbNrFaixa)
+                            .addComponent(cbGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLimpar)
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,13 +168,13 @@ public class ArquivoAcoes extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tbNrFaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(15, 15, 15)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel7)
+                    .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLimpar)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -181,15 +190,14 @@ public class ArquivoAcoes extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         tbTitulo.setText("");
         tbArtista.setText("");
         tbAlbum.setText("");
         tbAno.setText("");
         tbComentario.setText("");
         tbNrFaixa.setText("");
-        tbGenero.setText("");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,9 +235,10 @@ public class ArquivoAcoes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLimpar;
+    private javax.swing.JComboBox<String> cbGenero;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -241,8 +250,91 @@ public class ArquivoAcoes extends javax.swing.JFrame {
     private javax.swing.JTextField tbAno;
     private javax.swing.JTextField tbArtista;
     private javax.swing.JTextField tbComentario;
-    private javax.swing.JTextField tbGenero;
     private javax.swing.JTextField tbNrFaixa;
     private javax.swing.JTextField tbTitulo;
     // End of variables declaration//GEN-END:variables
+
+    private void InicializarComboGenero() {
+        cbGenero.removeAllItems();
+        cbGenero.addItem("Blues");
+        cbGenero.addItem("Classic Rock");
+        cbGenero.addItem("Country");
+        cbGenero.addItem("Dance");
+        cbGenero.addItem("Disco");
+        cbGenero.addItem("Funk");
+        cbGenero.addItem("Grunge");
+        cbGenero.addItem("Hip-Hop");
+        cbGenero.addItem("Jazz");
+        cbGenero.addItem("Metal");
+        cbGenero.addItem("New Age");
+        cbGenero.addItem("Oldies");
+        cbGenero.addItem("Other");
+        cbGenero.addItem("Pop");
+        cbGenero.addItem("R&B");
+        cbGenero.addItem("Rap");
+        cbGenero.addItem("Reggae");
+        cbGenero.addItem("Rock");
+        cbGenero.addItem("Techno");
+        cbGenero.addItem("Industrial");
+        cbGenero.addItem("Alternative");
+        cbGenero.addItem("Ska");
+        cbGenero.addItem("Death Metal");
+        cbGenero.addItem("Pranks");
+        cbGenero.addItem("Soundtrack");
+        cbGenero.addItem("Euro-Techno");
+        cbGenero.addItem("Ambient");
+        cbGenero.addItem("Trip-Hop");
+        cbGenero.addItem("Vocal");
+        cbGenero.addItem("Jazz+Funk");
+        cbGenero.addItem("Fusion");
+        cbGenero.addItem("Trance");
+        cbGenero.addItem("Classical");
+        cbGenero.addItem("Instrumental");
+        cbGenero.addItem("Acid");
+        cbGenero.addItem("House");
+        cbGenero.addItem("Game");
+        cbGenero.addItem("Sound Clip");
+        cbGenero.addItem("Gospel");
+        cbGenero.addItem("Noise");
+        cbGenero.addItem("AlternRock");
+        cbGenero.addItem("Bass");
+        cbGenero.addItem("Soul");
+        cbGenero.addItem("Punk");
+        cbGenero.addItem("Space");
+        cbGenero.addItem("Mediative");
+        cbGenero.addItem("Instrumental Pop");
+        cbGenero.addItem("Instrumental Rock");
+        cbGenero.addItem("Ethnic");
+        cbGenero.addItem("Gothic");
+        cbGenero.addItem("Darkwave");
+        cbGenero.addItem("Techno-Industrial");
+        cbGenero.addItem("Electronic");
+        cbGenero.addItem("Pop-Folk");
+        cbGenero.addItem("Eurodance");
+        cbGenero.addItem("Dream");
+        cbGenero.addItem("Southern Rock");
+        cbGenero.addItem("Comedy");
+        cbGenero.addItem("Cult");
+        cbGenero.addItem("Gangsta");
+        cbGenero.addItem("Top 40");
+        cbGenero.addItem("Christian Rap");
+        cbGenero.addItem("Pop/Funk");
+        cbGenero.addItem("Jungle");
+        cbGenero.addItem("Native American");
+        cbGenero.addItem("Cabaret");
+        cbGenero.addItem("New Wave");
+        cbGenero.addItem("Psychadelic");
+        cbGenero.addItem("Rave");
+        cbGenero.addItem("Showtunes");
+        cbGenero.addItem("Trailer");
+        cbGenero.addItem("Lo-Fi");
+        cbGenero.addItem("Tribal");
+        cbGenero.addItem("Acid Punk");
+        cbGenero.addItem("Acid Jazz");
+        cbGenero.addItem("Polka");
+        cbGenero.addItem("Retro");
+        cbGenero.addItem("Musical");
+        cbGenero.addItem("Rock & Roll");
+        cbGenero.addItem("Hard Rock");
+    }
 }

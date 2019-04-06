@@ -6,43 +6,16 @@ import java.io.IOException;
 
 public class UtilsIO {
 
+    public static int genresLastIndex = 79;
+
     private static int cursorPosition = 0;
 
-    public static enum genres {
-        Blues(0),
-        ClassicRock(1),
-        Country(2),
-        Dance(3),
-        Disco(4),
-        Funk(5),
-        Grunge(6),
-        HipHop(7),
-        Jazz(8),
-        Metal(9),
-        NewAge(10),
-        Oldies(11),
-        Other(12),
-        Pop(13),
-        RandB(14),
-        Rap(15),
-        Reggae(16),
-        Rock(17),
-        Techno(18),
-        Industrial(19);
-
-        public int value;
-
-        genres(int value) {
-            this.value = value;
-        }
+    public static void SaveFile(File file) throws IOException {
+        file.createNewFile();
+        StoreDataInFile(file);
     }
 
-    public static void Salvar(File arquivo) throws IOException {
-        arquivo.createNewFile();
-        PreencherArquivo(arquivo);
-    }
-
-    private static void PreencherArquivo(File arquivo) {
+    private static void StoreDataInFile(File file) {
 
     }
 
@@ -86,5 +59,16 @@ public class UtilsIO {
 
     public static void setCursorPosition(int cursorPosition) {
         UtilsIO.cursorPosition = cursorPosition;
+    }
+
+    public static boolean isNumber(String value) {
+        String validNumbers = "0123456789";
+
+        for (int i = 0; i < value.length(); i++) {
+            if (validNumbers.indexOf(value.charAt(i)) == -1) {
+                return false;
+            }
+        }
+        return true;
     }
 }
