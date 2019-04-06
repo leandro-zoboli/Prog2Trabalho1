@@ -63,7 +63,9 @@ public class UtilsIO {
 
     public static boolean isNumber(String value) {
         String validNumbers = "0123456789";
-
+        if (value.equals("")) {
+            return false;
+        }
         for (int i = 0; i < value.length(); i++) {
             if (validNumbers.indexOf(value.charAt(i)) == -1) {
                 return false;
