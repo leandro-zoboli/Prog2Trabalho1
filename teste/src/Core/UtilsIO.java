@@ -2,13 +2,15 @@ package Core;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 
 public class UtilsIO {
 
-    public static int genresLastIndex = 79;
-
+    public static final int GENRESLASTINDEX = 79;
     private static int cursorPosition = 0;
+    public static boolean firstTimeSaving = false;
 
     public static void SaveFile(File file) throws IOException {
         file.createNewFile();
@@ -25,6 +27,9 @@ public class UtilsIO {
             result[i] = -1;
         }
         try {
+            if (!file.canRead()) {
+                throw new Exception("O arquivo não pode ser lido.");
+            }
             FileInputStream reader = new FileInputStream(file);
             reader.skip(cursorPosition);
 
@@ -37,7 +42,7 @@ public class UtilsIO {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Ocorreu um erro ao ler o arquivo. Erro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar ler o arquivo. Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
         cursorPosition += length;
         return result;
@@ -50,18 +55,10 @@ public class UtilsIO {
             result += (char) i;
         }
         System.out.println(result);
-        return result.trim();
+        return result;
     }
 
-    public static int getCursorPosition() {
-        return cursorPosition;
-    }
-
-    public static void setCursorPosition(int cursorPosition) {
-        UtilsIO.cursorPosition = cursorPosition;
-    }
-
-    public static boolean isNumber(String value) {
+    public static boolean IsNumber(String value) {
         String validNumbers = "0123456789";
         if (value.equals("")) {
             return false;
@@ -72,5 +69,53 @@ public class UtilsIO {
             }
         }
         return true;
+    }
+
+    public static void SaveBytes(File file, String value, int lenght, String fieldName) {
+        try {
+            if (!file.canWrite()) {
+                throw new Exception("O arquivo não pode ser alterado.");
+            }
+            if (value.length() > lenght) {
+                throw new Exception("O tamanho máximo para gravação do campo " + fieldName + " é de " + lenght + " caracteres.");
+            }
+
+            FileOutputStream writer = new FileOutputStream(file);
+            if (firstTimeSaving) {
+                firstTimeSaving = false;
+            } else {
+                cursorPosition = 0;
+                String fileData = ReadData(file, 128);
+                if (!fileData.trim().equals("")) {
+                    for (byte letter : fileData.getBytes()) {
+                        writer.write(letter);
+                    }
+                }
+            }
+
+            int count = 0;
+            for (byte letter : value.getBytes()) {
+                writer.write(letter);
+                count++;
+            }
+
+            while (count < lenght) {
+                writer.write(' ');
+                count++;
+            }
+
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O seguinte erro ocorreu ao tentar salvar o arquivo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static int getCursorPosition() {
+        return cursorPosition;
+    }
+
+    public static void setCursorPosition(int cursorPosition) {
+        UtilsIO.cursorPosition = cursorPosition;
     }
 }
