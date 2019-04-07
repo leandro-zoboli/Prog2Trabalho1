@@ -208,16 +208,19 @@ public class ArquivoAcoes extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         UtilsIO.firstTimeSaving = true;
-        UtilsIO.SaveBytes(arquivo, "TAG", 3, null);
-        UtilsIO.SaveBytes(arquivo, tbTitulo.getText(), 30, tbTitulo.getName());
-        UtilsIO.SaveBytes(arquivo, tbArtista.getText(), 30, tbArtista.getName());
-        UtilsIO.SaveBytes(arquivo, tbAlbum.getText(), 30, tbAlbum.getName());
-        UtilsIO.SaveBytes(arquivo, tbAno.getText(), 4, tbAno.getName());
-        UtilsIO.SaveBytes(arquivo, tbComentario.getText(), 28, tbComentario.getName());
-        UtilsIO.SaveBytes(arquivo, "0", 1, null);
-        UtilsIO.SaveBytes(arquivo, tbNrFaixa.getText(), 1, tbNrFaixa.getName());
-        UtilsIO.SaveBytes(arquivo, String.valueOf(cbGenero.getSelectedIndex()), 1, cbGenero.getName());
-        JOptionPane.showMessageDialog(null, "O seguinte erro ocorreu ao tentar salvar o arquivo:", "Erro", JOptionPane.ERROR_MESSAGE);
+        boolean salvouComSucesso = true;
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, "TAG", 3, null);
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbTitulo.getText(), 30, "Título");
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbArtista.getText(), 30, "Artista");
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbAlbum.getText(), 30, "Álbum");
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbAno.getText(), 4, "Ano");
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbComentario.getText(), 28, "Comentário");
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, "0", 1, null);
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbNrFaixa.getText(), 1, "Número da faixa");
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, String.valueOf(cbGenero.getSelectedIndex()), 1, "Gênero");
+        if (salvouComSucesso) {
+            JOptionPane.showMessageDialog(null, "Alterações salvas!", "", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**

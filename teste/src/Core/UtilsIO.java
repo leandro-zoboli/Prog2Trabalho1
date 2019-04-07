@@ -71,7 +71,7 @@ public class UtilsIO {
         return true;
     }
 
-    public static void SaveBytes(File file, String value, int lenght, String fieldName) {
+    public static boolean SaveBytes(File file, String value, int lenght, String fieldName) {
         try {
             if (!file.canWrite()) {
                 throw new Exception("O arquivo não pode ser alterado.");
@@ -110,8 +110,10 @@ public class UtilsIO {
 
             writer.flush();
             writer.close();
+            return true;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "O seguinte erro ocorreu ao tentar salvar o arquivo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 
