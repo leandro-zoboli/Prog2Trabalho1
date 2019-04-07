@@ -80,16 +80,20 @@ public class UtilsIO {
                 throw new Exception("O tamanho máximo para gravação do campo " + fieldName + " é de " + lenght + " caracteres.");
             }
 
-            FileOutputStream writer = new FileOutputStream(file);
+            String fileData = "";
+
             if (firstTimeSaving) {
                 firstTimeSaving = false;
             } else {
                 cursorPosition = 0;
-                String fileData = ReadData(file, 128);
-                if (!fileData.trim().equals("")) {
-                    for (byte letter : fileData.getBytes()) {
-                        writer.write(letter);
-                    }
+                fileData = ReadData(file, (int) file.length());
+            }
+
+            FileOutputStream writer = new FileOutputStream(file);
+
+            if (!fileData.trim().equals("")) {
+                for (byte letter : fileData.getBytes()) {
+                    writer.write(letter);
                 }
             }
 

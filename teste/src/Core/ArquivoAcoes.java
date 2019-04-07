@@ -1,21 +1,25 @@
 package Core;
 
 import java.io.File;
+import javax.swing.JOptionPane;
 
 public class ArquivoAcoes extends javax.swing.JFrame {
+
+    public File arquivo;
 
     /**
      * Creates new form ArquivoAcoes
      */
-    public ArquivoAcoes(File arquivo) {
+    public ArquivoAcoes(File Arquivo) {
         initComponents();
+        arquivo = Arquivo;
         InicializarComboGenero();
         this.setLocationRelativeTo(null);
-        tbTitulo.setText(UtilsIO.ReadData(arquivo, 30));
-        tbArtista.setText(UtilsIO.ReadData(arquivo, 30));
-        tbAlbum.setText(UtilsIO.ReadData(arquivo, 30));
+        tbTitulo.setText(UtilsIO.ReadData(arquivo, 30).trim());
+        tbArtista.setText(UtilsIO.ReadData(arquivo, 30).trim());
+        tbAlbum.setText(UtilsIO.ReadData(arquivo, 30).trim());
         tbAno.setText(UtilsIO.ReadData(arquivo, 4));
-        tbComentario.setText(UtilsIO.ReadData(arquivo, 28));
+        tbComentario.setText(UtilsIO.ReadData(arquivo, 28).trim());
         UtilsIO.ReadData(arquivo, 1);
         tbNrFaixa.setText(UtilsIO.ReadData(arquivo, 1));
         preencheGenero(UtilsIO.ReadData(arquivo, 1));
@@ -27,8 +31,8 @@ public class ArquivoAcoes extends javax.swing.JFrame {
     }
 
     private void preencheGenero(String genero) {
-        if (UtilsIO.isNumber(genero)) {
-            if (Integer.parseInt(genero) <= UtilsIO.genresLastIndex) {
+        if (UtilsIO.IsNumber(genero)) {
+            if (Integer.parseInt(genero) <= UtilsIO.GENRESLASTINDEX) {
                 cbGenero.setSelectedIndex(Integer.parseInt(genero));
             }
         }
@@ -51,7 +55,7 @@ public class ArquivoAcoes extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
         tbTitulo = new javax.swing.JTextField();
         tbArtista = new javax.swing.JTextField();
         tbAlbum = new javax.swing.JTextField();
@@ -77,14 +81,20 @@ public class ArquivoAcoes extends javax.swing.JFrame {
 
         jLabel7.setText("Gênero:");
 
-        jButton1.setText("Cancelar");
+        jButton1.setText("Selecionar novo arquivo");
+        jButton1.setToolTipText("");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Salvar alterações");
+        btnSalvar.setText("Salvar alterações");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         tbAno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,42 +119,37 @@ public class ArquivoAcoes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(75, 75, 75)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                            .addComponent(tbArtista)
-                            .addComponent(tbAlbum)
-                            .addComponent(tbAno)
-                            .addComponent(tbComentario)
-                            .addComponent(tbNrFaixa)
-                            .addComponent(cbGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSalvar))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnLimpar)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel7)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel5))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(tbTitulo)
+                                .addComponent(tbArtista)
+                                .addComponent(tbAlbum)
+                                .addComponent(tbAno)
+                                .addComponent(tbComentario)
+                                .addComponent(tbNrFaixa)
+                                .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnLimpar)
-                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addGap(15, 15, 15)
+                .addComponent(btnLimpar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(tbTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -173,8 +178,10 @@ public class ArquivoAcoes extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLimpar)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalvar)
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -198,6 +205,20 @@ public class ArquivoAcoes extends javax.swing.JFrame {
         tbComentario.setText("");
         tbNrFaixa.setText("");
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        UtilsIO.firstTimeSaving = true;
+        UtilsIO.SaveBytes(arquivo, "TAG", 3, null);
+        UtilsIO.SaveBytes(arquivo, tbTitulo.getText(), 30, tbTitulo.getName());
+        UtilsIO.SaveBytes(arquivo, tbArtista.getText(), 30, tbArtista.getName());
+        UtilsIO.SaveBytes(arquivo, tbAlbum.getText(), 30, tbAlbum.getName());
+        UtilsIO.SaveBytes(arquivo, tbAno.getText(), 4, tbAno.getName());
+        UtilsIO.SaveBytes(arquivo, tbComentario.getText(), 28, tbComentario.getName());
+        UtilsIO.SaveBytes(arquivo, "0", 1, null);
+        UtilsIO.SaveBytes(arquivo, tbNrFaixa.getText(), 1, tbNrFaixa.getName());
+        UtilsIO.SaveBytes(arquivo, String.valueOf(cbGenero.getSelectedIndex()), 1, cbGenero.getName());
+        JOptionPane.showMessageDialog(null, "O seguinte erro ocorreu ao tentar salvar o arquivo:", "Erro", JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -236,9 +257,9 @@ public class ArquivoAcoes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cbGenero;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
