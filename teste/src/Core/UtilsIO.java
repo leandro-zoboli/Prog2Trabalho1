@@ -1,9 +1,13 @@
 package Core;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.JOptionPane;
 
 public class UtilsIO {
@@ -11,15 +15,6 @@ public class UtilsIO {
     public static final int GENRESLASTINDEX = 79;
     private static int cursorPosition = 0;
     public static boolean firstTimeSaving = false;
-
-    public static void SaveFile(File file) throws IOException {
-        file.createNewFile();
-        StoreDataInFile(file);
-    }
-
-    private static void StoreDataInFile(File file) {
-
-    }
 
     public static int[] ReadBytes(File file, int length) {
         int[] result = new int[length];
@@ -30,7 +25,7 @@ public class UtilsIO {
             if (!file.canRead()) {
                 throw new Exception("O arquivo não pode ser lido.");
             }
-            FileInputStream reader = new FileInputStream(file);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
             reader.skip(cursorPosition);
 
             for (int i = cursorPosition; i < length + cursorPosition; i++) {
@@ -54,7 +49,6 @@ public class UtilsIO {
         for (int i : data) {
             result += (char) i;
         }
-        System.out.println(result);
         return result;
     }
 

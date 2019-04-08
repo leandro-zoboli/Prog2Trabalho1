@@ -5,7 +5,8 @@ import javax.swing.JOptionPane;
 
 public class ArquivoAcoes extends javax.swing.JFrame {
 
-    public File arquivo;
+    private File arquivo;
+    private String audioArquivo = "";
 
     /**
      * Creates new form ArquivoAcoes
@@ -13,6 +14,9 @@ public class ArquivoAcoes extends javax.swing.JFrame {
     public ArquivoAcoes(File Arquivo) {
         initComponents();
         arquivo = Arquivo;
+        UtilsIO.setCursorPosition(129);
+        audioArquivo = UtilsIO.ReadData(arquivo, (int) arquivo.length());
+        UtilsIO.setCursorPosition(3);
         InicializarComboGenero();
         this.setLocationRelativeTo(null);
         tbTitulo.setText(UtilsIO.ReadData(arquivo, 30).trim());
@@ -22,7 +26,7 @@ public class ArquivoAcoes extends javax.swing.JFrame {
         tbComentario.setText(UtilsIO.ReadData(arquivo, 28).trim());
         UtilsIO.ReadData(arquivo, 1);
         tbNrFaixa.setText(UtilsIO.ReadData(arquivo, 1));
-        preencheGenero(UtilsIO.ReadData(arquivo, 1));
+        preencheGenero(UtilsIO.ReadData(arquivo, 2));
     }
 
     public ArquivoAcoes() {
@@ -217,10 +221,11 @@ public class ArquivoAcoes extends javax.swing.JFrame {
         salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbComentario.getText(), 28, "Comentário");
         salvouComSucesso = UtilsIO.SaveBytes(arquivo, "0", 1, null);
         salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbNrFaixa.getText(), 1, "Número da faixa");
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, String.valueOf(cbGenero.getSelectedIndex()), 1, "Gênero");
+        salvouComSucesso = UtilsIO.SaveBytes(arquivo, String.valueOf(cbGenero.getSelectedIndex()), 2, "Gênero");
         if (salvouComSucesso) {
             JOptionPane.showMessageDialog(null, "Alterações salvas!", "", JOptionPane.INFORMATION_MESSAGE);
         }
+        UtilsIO.SaveBytes(arquivo, audioArquivo, audioArquivo.length(), "");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
