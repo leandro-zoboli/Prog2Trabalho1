@@ -119,7 +119,7 @@ public class ArquivoEscolha extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarArquivoActionPerformed
 
     private void btnProntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProntoActionPerformed
-        UtilsIO.setCursorPosition(0);
+        UtilsIO.setCursorPosition((int) arquivo.length() - 129);
         if (!UtilsIO.ReadData(arquivo, 3).equals("TAG")) {
             JOptionPane.showMessageDialog(this, "O arquivo escolhido não possui o formato \"ID3v1.1\"", "Atenção:", JOptionPane.WARNING_MESSAGE);
         } else {

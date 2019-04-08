@@ -14,11 +14,11 @@ public class ArquivoAcoes extends javax.swing.JFrame {
     public ArquivoAcoes(File Arquivo) {
         initComponents();
         arquivo = Arquivo;
-        UtilsIO.setCursorPosition(129);
-        audioArquivo = UtilsIO.ReadData(arquivo, (int) arquivo.length());
-        UtilsIO.setCursorPosition(3);
         InicializarComboGenero();
         this.setLocationRelativeTo(null);
+        UtilsIO.setCursorPosition(0);
+        audioArquivo = UtilsIO.ReadData(arquivo, (int) arquivo.length() - 129);
+        UtilsIO.ReadData(arquivo, 3);
         tbTitulo.setText(UtilsIO.ReadData(arquivo, 30).trim());
         tbArtista.setText(UtilsIO.ReadData(arquivo, 30).trim());
         tbAlbum.setText(UtilsIO.ReadData(arquivo, 30).trim());
@@ -211,21 +211,27 @@ public class ArquivoAcoes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        UtilsIO.firstTimeSaving = true;
-        boolean salvouComSucesso = true;
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, "TAG", 3, null);
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbTitulo.getText(), 30, "Título");
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbArtista.getText(), 30, "Artista");
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbAlbum.getText(), 30, "Álbum");
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbAno.getText(), 4, "Ano");
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbComentario.getText(), 28, "Comentário");
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, "0", 1, null);
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbNrFaixa.getText(), 1, "Número da faixa");
-        salvouComSucesso = UtilsIO.SaveBytes(arquivo, String.valueOf(cbGenero.getSelectedIndex()), 2, "Gênero");
-        if (salvouComSucesso) {
-            JOptionPane.showMessageDialog(null, "Alterações salvas!", "", JOptionPane.INFORMATION_MESSAGE);
+        if (!tbAno.getText().equals("") && !UtilsIO.IsNumber(tbAno.getText())) {
+            JOptionPane.showMessageDialog(null, "O campo 'Ano' deve ser preenchido somente com números.", "", JOptionPane.ERROR_MESSAGE);
+        } else if (!tbNrFaixa.getText().equals("") && !UtilsIO.IsNumber(tbNrFaixa.getText())) {
+            JOptionPane.showMessageDialog(null, "O campo 'Nr. Faixa' deve ser preenchido somente com números.", "", JOptionPane.ERROR_MESSAGE);
+        } else {
+            UtilsIO.firstTimeSaving = true;
+            boolean salvouComSucesso = true;
+            UtilsIO.SaveBytes(arquivo, audioArquivo, audioArquivo.length(), "");
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, "TAG", 3, null);
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbTitulo.getText(), 30, "Título");
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbArtista.getText(), 30, "Artista");
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbAlbum.getText(), 30, "Álbum");
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbAno.getText(), 4, "Ano");
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbComentario.getText(), 28, "Comentário");
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, "0", 1, null);
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, tbNrFaixa.getText(), 1, "Número da faixa");
+            salvouComSucesso = UtilsIO.SaveBytes(arquivo, String.valueOf(cbGenero.getSelectedIndex()), 2, "Gênero");
+            if (salvouComSucesso) {
+                JOptionPane.showMessageDialog(null, "Alterações salvas!", "", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
-        UtilsIO.SaveBytes(arquivo, audioArquivo, audioArquivo.length(), "");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**

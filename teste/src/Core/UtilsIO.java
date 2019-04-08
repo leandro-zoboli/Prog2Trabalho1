@@ -80,7 +80,7 @@ public class UtilsIO {
                 firstTimeSaving = false;
             } else {
                 cursorPosition = 0;
-                fileData = ReadData(file, (int) file.length());
+                fileData = ReadData(file, (int) file.length() - 1);
             }
 
             FileOutputStream writer = new FileOutputStream(file);
